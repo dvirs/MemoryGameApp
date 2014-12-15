@@ -1,5 +1,6 @@
 package com.example.admin.memorygame;
 
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -23,22 +24,26 @@ public class LevelsActivity extends ActionBarActivity {
         level1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent gameIntent = new Intent(LevelsActivity.this, CardGameActivity.class);
+                gameIntent.putExtra("row",4);
+                gameIntent.putExtra("col",3);
+                startActivity(gameIntent);
 
-                Toast.makeText(LevelsActivity.this, "Level 1", Toast.LENGTH_SHORT).show();
+
             }
         });
 
         level2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LevelsActivity.this, "Level 2", Toast.LENGTH_SHORT).show();
+
             }
         });
 
         level3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LevelsActivity.this, "Level 3", Toast.LENGTH_SHORT).show();
+
             }
         });
 
