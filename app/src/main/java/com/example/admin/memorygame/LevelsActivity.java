@@ -23,6 +23,7 @@ public class LevelsActivity extends ActionBarActivity {
         level1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Toast.makeText(LevelsActivity.this, "Level 1", Toast.LENGTH_SHORT).show();
             }
         });
