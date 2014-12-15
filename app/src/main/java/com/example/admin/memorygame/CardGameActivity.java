@@ -8,7 +8,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 
-public class CardGameActivity extends ActionBarActivity{
+public class CardGameActivity extends Activity{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,7 +20,34 @@ public class CardGameActivity extends ActionBarActivity{
         TextView debug = (TextView) findViewById(R.id.debug);
         debug.setText("row: " + row +"colums: " +col);
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

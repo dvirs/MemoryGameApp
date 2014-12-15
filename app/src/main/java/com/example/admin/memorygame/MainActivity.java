@@ -1,8 +1,10 @@
 package com.example.admin.memorygame;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -10,25 +12,54 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.e("debug","inside onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.e("debug","super not stuck");
         Button newGameBtn = (Button)findViewById(R.id.newGame_main);
         newGameBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                setContentView(R.layout.activity_main);
+                Log.e("debug","new game was pressed");
                 Intent intent = new Intent(MainActivity.this, LevelsActivity.class);
                 startActivity(intent);
             }
         });
     }
 
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

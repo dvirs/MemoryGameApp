@@ -1,5 +1,6 @@
 package com.example.admin.memorygame;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -10,13 +11,13 @@ import android.widget.Button;
 import android.widget.Toast;
 
 
-public class LevelsActivity extends ActionBarActivity {
-
+public class LevelsActivity extends Activity {
+    private Intent gameIntent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
-
+        gameIntent = new Intent(LevelsActivity.this, CardGameActivity.class);
         Button level1 = (Button)findViewById(R.id.level1Btn_lev);
         Button level2 = (Button)findViewById(R.id.level2Btn_lev);
         Button level3 = (Button)findViewById(R.id.level3Btn_lev);
@@ -24,7 +25,7 @@ public class LevelsActivity extends ActionBarActivity {
         level1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent gameIntent = new Intent(LevelsActivity.this, CardGameActivity.class);
+
                 gameIntent.putExtra("row",4);
                 gameIntent.putExtra("col",3);
                 startActivity(gameIntent);
@@ -36,19 +37,50 @@ public class LevelsActivity extends ActionBarActivity {
         level2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                gameIntent.putExtra("row",5);
+                gameIntent.putExtra("col",4);
+                startActivity(gameIntent);
             }
         });
 
         level3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                gameIntent.putExtra("row",6);
+                gameIntent.putExtra("col",5);
+                startActivity(gameIntent);
             }
         });
 
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
