@@ -5,20 +5,33 @@ import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 
 public class CardGameActivity extends Activity{
-
+    public int side = 0;
+    public ImageButton c0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_card_game);
+        setContentView(R.layout.level3);
         Bundle bund = getIntent().getExtras();
-        int row = bund.getInt("row");
-        int col = bund.getInt("col");
-        TextView debug = (TextView) findViewById(R.id.debug);
-        debug.setText("row: " + row +"colums: " +col);
+
+        c0 = (ImageButton) findViewById(R.id.c0);
+        c0.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(side == 0) {
+                    c0.setImageResource(R.drawable.level1);
+                    side = 1;
+                }else{
+                    c0.setImageResource(R.drawable.card_back);
+                    side = 0;
+                }
+            }
+        });
     }
     @Override
     public void onStart(){
