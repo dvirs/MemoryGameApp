@@ -1,37 +1,25 @@
 package com.example.admin.memorygame;
 
 import android.app.Activity;
-import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageButton;
-import android.widget.TextView;
+import android.widget.GridView;
+
+import com.example.admin.memorygame.classes.CardAdapter;
 
 
 public class CardGameActivity extends Activity{
     public int side = 0;
-    public ImageButton c0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.level3);
+        setContentView(R.layout.level1);
         Bundle bund = getIntent().getExtras();
+        int level =(int) bund.get("level");
+        GridView gridview = (GridView) findViewById(R.id.level1);
+        gridview.setAdapter(new CardAdapter(this));
 
-        c0 = (ImageButton) findViewById(R.id.c0);
-        c0.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(side == 0) {
-                    c0.setImageResource(R.drawable.level1);
-                    side = 1;
-                }else{
-                    c0.setImageResource(R.drawable.card_back);
-                    side = 0;
-                }
-            }
-        });
     }
     @Override
     public void onStart(){
