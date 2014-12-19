@@ -8,11 +8,10 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".MainActivity"
+            android:name=".MenuActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -20,14 +19,19 @@
             android:name=".LevelsActivity"
             android:label="@string/title_activity_levels" >
         </activity>
-        <activity
-            android:name=".CardGameActivity"
-            android:label="@string/title_activity_card_game"
-            android:parentActivityName=".LevelsActivity" >
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.example.admin.memorygame.LevelsActivity" />
+
+        <activity android:name="MainActivity" android:configChanges="orientation"
+            android:theme="@android:style/Theme.NoTitleBar" android:screenOrientation="portrait">
+            <intent-filter >
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
+        <activity android:label="@string/config_windowtitle" android:name="ConfigActivity"></activity>
+
+        <activity android:name="InfoActivity"></activity>
+
     </application>
 
 </manifest>

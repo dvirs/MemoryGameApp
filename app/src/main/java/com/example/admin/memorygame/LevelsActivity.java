@@ -17,7 +17,7 @@ public class LevelsActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_levels);
-        gameIntent = new Intent(LevelsActivity.this, CardGameActivity.class);
+        gameIntent = new Intent(LevelsActivity.this, MainActivity.class);
         Button level1 = (Button)findViewById(R.id.level1Btn_lev);
         Button level2 = (Button)findViewById(R.id.level2Btn_lev);
         Button level3 = (Button)findViewById(R.id.level3Btn_lev);
@@ -26,17 +26,15 @@ public class LevelsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                gameIntent.putExtra("level",1);
+                gameIntent.putExtra("level",300000); //Five min in milisecond
                 startActivity(gameIntent);
-
-
             }
         });
 
         level2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameIntent.putExtra("level",2);
+                gameIntent.putExtra("level",180000);
                 startActivity(gameIntent);
             }
         });
@@ -44,7 +42,7 @@ public class LevelsActivity extends Activity {
         level3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameIntent.putExtra("level",3);
+                gameIntent.putExtra("level",60000);
                 startActivity(gameIntent);
             }
         });
