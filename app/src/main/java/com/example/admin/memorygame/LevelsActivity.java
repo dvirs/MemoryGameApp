@@ -26,7 +26,8 @@ public class LevelsActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                gameIntent.putExtra("level",300000); //Five min in milisecond
+               //gameIntent.putExtra("level",300000); //Five min in milisecond
+                gameIntent.putExtra("level",1);
                 startActivity(gameIntent);
             }
         });
@@ -34,7 +35,8 @@ public class LevelsActivity extends Activity {
         level2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameIntent.putExtra("level",180000);
+                //gameIntent.putExtra("level",180000);
+                gameIntent.putExtra("level",2);
                 startActivity(gameIntent);
             }
         });
@@ -42,7 +44,8 @@ public class LevelsActivity extends Activity {
         level3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                gameIntent.putExtra("level",60000);
+                //gameIntent.putExtra("level",60000);
+                gameIntent.putExtra("level",3);
                 startActivity(gameIntent);
             }
         });

@@ -8,6 +8,7 @@ import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -46,6 +47,7 @@ public class MainActivity extends Activity implements OnClickListener {
     private int turns_taken=0;
     private TextView turns_taken_label;
     private TextView timerTextField;
+    private int numCrads;
     Handler handler;
 
     @Override
@@ -56,10 +58,28 @@ public class MainActivity extends Activity implements OnClickListener {
         Intent intent = getIntent();
         bund = intent.getExtras();
         int level = (int) bund.get("level");
+        int time;
+
         handler = new Handler();
         timerTextField = (TextView)MainActivity.this.findViewById(R.id.timer);
 
-        new CountDownTimer(level,1000){
+        if(level == 1) {
+            time = 300000;
+            numCrads = 8;
+            assignments = new int[8];
+        }
+        else if(level == 2) {
+            time = 180000;
+            numCrads = 12;
+            assignments = new int[12];
+        }
+        else {
+            time = 60000;
+            numCrads = 16;
+            assignments = new int[16];
+        }
+
+        new CountDownTimer(time,1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -78,29 +98,35 @@ public class MainActivity extends Activity implements OnClickListener {
         turns_taken_label=(TextView)MainActivity.this.findViewById(R.id.turns);
 
         //create a new array to hold the card positions
-        assignments = new int[16];
+        //assignments = new int[16];
+
 
         //set the card at each position to -1 (unset)
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < numCrads; i++){
             assignments[i] = -1;
         }
 
-        imageviews = new ImageView[viewIds.length];
-        for(int i = 0; i < viewIds.length; i++){
-            imageviews[i] = (ImageView)findViewById(viewIds[i]);
+        imageviews = new ImageView[16];
+        for(int i = 0; i < 16; i++){
+            if(i < numCrads) {
+                imageviews[i] = (ImageView) findViewById(viewIds[i]);
+            }
+            else {
+                ((ImageView)findViewById(viewIds[i])).setVisibility(View.INVISIBLE);
+            }
         }
 
         Random random = new Random();
 
         //for each card, (we have 8) loop through.
-        for(int i = 0; i < 8; i++){
+        for(int i = 0; i < numCrads/2; i++){
             //each card goes in 2 slots
             for (int j = 0; j < 2; j++){
                 //generate a random slot
-                int randomSlot = random.nextInt(16);
+                int randomSlot = random.nextInt(numCrads);
                 //make sure that the slot isn't already populated
                 while(assignments[randomSlot] != -1){
-                    randomSlot = random.nextInt(16);
+                    randomSlot = random.nextInt(numCrads);
                 }
                 //set this card to that slot
                 assignments[randomSlot] = i;
@@ -110,11 +136,11 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
         //set click listeners for each view
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < numCrads; i++){
             ((ImageView)findViewById(viewIds[i])).setOnClickListener(this);
         }
         //set each image to blank
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < numCrads; i++){
             ((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
         }
 
@@ -128,7 +154,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         SoundManager.playSound(SoundManager.SOUND_FLIP);
 
-        for(int i =0; i < 16; i++)	{
+        for(int i =0; i < numCrads; i++)	{
             //determine which id we're dealing with
             if(v.getId() == viewIds[i]){
                 //set the face up image for each
@@ -149,9 +175,16 @@ public class MainActivity extends Activity implements OnClickListener {
 
             currentIndex = index;
 
-            for(ImageView view:imageviews){
+            /*for(ImageView view:imageviews){
                 view.setFocusable(false);
                 view.setClickable(false);
+            }*/
+
+            for(int i = 0; i < 16; i++) {
+                if(i < numCrads) {
+                    imageviews[i].setFocusable(true);
+                    imageviews[i].setClickable(true);
+                }
             }
 
             flippedCards = 0;
@@ -174,7 +207,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 foundPairs++;
                 foundPairsLabel.setText(String.valueOf(foundPairs));	//Update label of matches
 
-                if(foundPairs == NUM_PAIRS){
+                if(foundPairs == numCrads/2){
                     win();
                 }
 
@@ -184,9 +217,15 @@ public class MainActivity extends Activity implements OnClickListener {
 
             }
 
-            for(ImageView view: imageviews){
+            /*for(ImageView view: imageviews){
                 view.setFocusable(true);
                 view.setClickable(true);
+            }*/
+            for(int i = 0; i < 16; i++) {
+                if(i < numCrads) {
+                    imageviews[i].setFocusable(true);
+                    imageviews[i].setClickable(true);
+                }
             }
         }
     };
