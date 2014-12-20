@@ -5,7 +5,7 @@
     <string name="app_name">Memory Game</string>
     <string name="player_turn">Your Turn</string>
     <string name="opponent_turn">Opponent\'s Turn</string>
-    <string name="single_player_button_label">Single Player</string>
+    <string name="play_button_label">Play Game</string>
 
     <string name="turns_label">Turns Taken</string>
     <string name="pairs_label">Pairs Found</string>
