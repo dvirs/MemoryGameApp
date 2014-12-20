@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="@drawable/menubackground" >
+    android:background="@drawable/background" >
 
 
     <LinearLayout
@@ -10,13 +10,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:orientation="vertical" android:paddingBottom="26dp">
+        android:orientation="vertical" android:paddingBottom="26dp"
+        android:id="@+id/linearLayout">
 
         <Button
             android:id="@+id/single_player_button"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/single_player_button_label" />
+            android:text="@string/play_button_label" />
 
         <Button
             android:id="@+id/high_score_button"
@@ -37,5 +38,16 @@
             android:text="About" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/title"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>

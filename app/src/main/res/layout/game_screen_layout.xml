@@ -2,19 +2,24 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:background="#454545">
+    android:orientation="vertical"
+    android:background="@drawable/background">
 
     <LinearLayout
         android:id="@+id/toptoolbarcontainer"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:orientation="vertical" android:background="@drawable/toolbar_bg" android:gravity="center" android:layout_alignParentTop="true">
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_alignParentTop="true">
 
         <TextView
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name" android:textSize="24sp" android:textColor="#FFFFFF"/>
+            android:text="@string/app_name"
+            android:textSize="24sp"
+            android:textColor="#FFFFFF"/>
 
     </LinearLayout>
     
@@ -22,12 +27,17 @@
         android:id="@+id/cardrow_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:orientation="vertical" android:layout_gravity="center" android:gravity="center" android:layout_centerInParent="true">
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_centerInParent="true">
 
         <LinearLayout
             android:id="@+id/row_0"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content" android:layout_gravity="center_horizontal" android:gravity="center_horizontal">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_horizontal">
 
             <ImageView
                 android:id="@+id/card_0"
@@ -194,13 +204,17 @@
         android:id="@+id/bottomtoolbarcontainer"
         android:layout_width="fill_parent"
         android:layout_height="50dip"
-        android:orientation="horizontal" android:layout_alignParentBottom="true" android:background="@drawable/toolbar_playerturn" android:gravity="center">
+        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
+        android:gravity="center">
 
         <TextView
             android:id="@+id/timelb"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Time" android:textColor="#FFFFFF" android:textSize="24sp"
+            android:text="@string/Time"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp"
             android:layout_gravity="center_horizontal" />
 
         <TextView
@@ -218,13 +232,17 @@
         android:id="@+id/outcome_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" android:layout_centerInParent="true" android:gravity="center" android:visibility="gone">
+        android:orientation="vertical"
+        android:layout_centerInParent="true"
+        android:gravity="center" android:visibility="gone">
 
         <TextView
             android:id="@+id/outcome_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="YOU WIN!" android:textSize="30dip" android:textColor="#EEEEEE"/>
+            android:text="YOU WIN!"
+            android:textSize="30dip"
+            android:textColor="#EEEEEE"/>
 
     </LinearLayout>
 
