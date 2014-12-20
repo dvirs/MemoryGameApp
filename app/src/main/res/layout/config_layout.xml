@@ -2,12 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" android:background="@drawable/background">
+    android:orientation="vertical"
+    android:background="@drawable/background">
 
-    <CheckBox
-        android:id="@+id/config_bgmusic_enable"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/config_backgroundmusic" android:textColor="#999999"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal">
 
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/config_backgroundmusic"
+            android:textColor="#ff0e070a"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="175dp"
+            android:checked="false"
+            android:textSize="24sp">
+            </CheckBox>
+    </RelativeLayout>
 </LinearLayout>
