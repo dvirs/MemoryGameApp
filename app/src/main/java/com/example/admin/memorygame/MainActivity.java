@@ -69,12 +69,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
             @Override
             public void onFinish() {
-                SoundManager.playLoopedSound(SoundManager.SOUND_LOSER);
+
                 Toast.makeText(MainActivity.this,"Your Time Is Up!",Toast.LENGTH_LONG).show();
                 timelable.setText("You ");
                 timerThread.cancel();
                 timerTextField.setText("Lose!");
-                try{Thread.sleep(3000);}catch (Exception e){}
+                SoundManager.playLoopedSound(SoundManager.SOUND_LOSER);
                 quit();
             }
         }.start();
@@ -223,21 +223,28 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void quit(){
-        SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
-        SoundManager.pauseLoopedSound(SoundManager.SOUND_LOSER);
-        this.finish();
+
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
+                SoundManager.pauseLoopedSound(SoundManager.SOUND_LOSER);
+
+                MainActivity.this.finish();
+            }
+        }, 4000);
+
     }
 
     private void win(){
-        SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
+
         ((LinearLayout)this.findViewById(R.id.outcome_layout)).setVisibility(View.VISIBLE);
         timelable.setText("Good ");
         timerThread.cancel();
         timerTextField.setText("Job!");
-        try {
-            Thread.sleep(3500);
-        }catch (Exception e){}
+        SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
         quit();
+
         }
 
 private int settingsByLevel(int level) {
