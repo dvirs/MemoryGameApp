@@ -18,7 +18,6 @@ import android.widget.Toast;
 
 import java.util.Random;
 
-
 public class MainActivity extends Activity implements OnClickListener {
 
     private int[] viewIds = {R.id.card_0, R.id.card_1, R.id.card_2, R.id.card_3,
@@ -33,22 +32,18 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private ImageView[] imageviews;
 
-    private static final int NUM_PAIRS = 8;
-
-    private int flippedCards;
-
-    private int currentIndex = -1;
-
-    private int lastIndex = -1;
-
-    private int foundPairs = 0;
     private TextView foundPairsLabel;
-    private Bundle bund;
-    private int turns_taken=0;
     private TextView turns_taken_label;
     private TextView timerTextField;
+    private Bundle bund;
+    private Handler handler;
+
+    private int flippedCards;
+    private int currentIndex = -1;
+    private int lastIndex = -1;
+    private int foundPairs = 0;
+    private int turns_taken=0;
     private int numCrads;
-    Handler handler;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -63,27 +58,13 @@ public class MainActivity extends Activity implements OnClickListener {
         handler = new Handler();
         timerTextField = (TextView)MainActivity.this.findViewById(R.id.timer);
 
-        if(level == 1) {
-            time = 300000;
-            numCrads = 8;
-            assignments = new int[8];
-        }
-        else if(level == 2) {
-            time = 180000;
-            numCrads = 12;
-            assignments = new int[12];
-        }
-        else {
-            time = 60000;
-            numCrads = 16;
-            assignments = new int[16];
-        }
+        time = settingsByLevel(level);
 
         new CountDownTimer(time,1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
-                timerTextField.setText(""+millisUntilFinished/1000);
+                timerTextField.setText("" + millisUntilFinished/1000);
             }
 
             @Override
@@ -97,9 +78,8 @@ public class MainActivity extends Activity implements OnClickListener {
         foundPairsLabel=(TextView)MainActivity.this.findViewById(R.id.pairs_counter);
         turns_taken_label=(TextView)MainActivity.this.findViewById(R.id.turns);
 
-        //create a new array to hold the card positions
-        //assignments = new int[16];
-
+        //create a new cards array by the selected level
+        assignments = new int[numCrads];
 
         //set the card at each position to -1 (unset)
         for(int i = 0; i < numCrads; i++){
@@ -118,7 +98,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
         Random random = new Random();
 
-        //for each card, (we have 8) loop through.
+        //for each card loop through.
         for(int i = 0; i < numCrads/2; i++){
             //each card goes in 2 slots
             for (int j = 0; j < 2; j++){
@@ -130,17 +110,12 @@ public class MainActivity extends Activity implements OnClickListener {
                 }
                 //set this card to that slot
                 assignments[randomSlot] = i;
-                System.out.println("Putting " + i + " in slot " + randomSlot);
             }
-
         }
 
-        //set click listeners for each view
+        //set click listeners for each view & set image to back card
         for(int i = 0; i < numCrads; i++){
             ((ImageView)findViewById(viewIds[i])).setOnClickListener(this);
-        }
-        //set each image to blank
-        for(int i = 0; i < numCrads; i++){
             ((ImageView)findViewById(viewIds[i])).setImageResource(R.drawable.card_back);
         }
 
@@ -150,11 +125,9 @@ public class MainActivity extends Activity implements OnClickListener {
     @Override
     public void onClick(View v) {
         int index = Integer.parseInt((String)v.getTag());
-        System.out.println("index is " + index);
-
         SoundManager.playSound(SoundManager.SOUND_FLIP);
 
-        for(int i =0; i < numCrads; i++)	{
+        for(int i = 0; i < numCrads; i++)	{
             //determine which id we're dealing with
             if(v.getId() == viewIds[i]){
                 //set the face up image for each
@@ -167,39 +140,30 @@ public class MainActivity extends Activity implements OnClickListener {
         }
         flippedCards++;
 
-
-
         if(flippedCards == 2){
             turns_taken++;
             turns_taken_label.setText(String.valueOf(turns_taken));
 
             currentIndex = index;
 
-            /*for(ImageView view:imageviews){
-                view.setFocusable(false);
-                view.setClickable(false);
-            }*/
-
             for(int i = 0; i < 16; i++) {
                 if(i < numCrads) {
-                    imageviews[i].setFocusable(true);
-                    imageviews[i].setClickable(true);
+                    imageviews[i].setFocusable(false);
+                    imageviews[i].setClickable(false);
                 }
             }
-
             flippedCards = 0;
-
             handler.postDelayed(flipCardsBack, 1000);
-
-        }else{
+        }
+        else {
             lastIndex = index;
         }
-
     }
 
     Runnable flipCardsBack = new Runnable() {
         public void run() {
             SoundManager.playSound(SoundManager.SOUND_FLOP);
+            //Check if the two cards with the same image
             if(assignments[currentIndex] == assignments[lastIndex]){
                 ((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
                 ((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
@@ -211,16 +175,13 @@ public class MainActivity extends Activity implements OnClickListener {
                     win();
                 }
 
-            }else{
+            }
+            //Cards with different image
+            else {
                 ((ImageView)findViewById(viewIds[currentIndex])).setImageResource(R.drawable.card_back);
                 ((ImageView)findViewById(viewIds[lastIndex])).setImageResource(R.drawable.card_back);
-
             }
 
-            /*for(ImageView view: imageviews){
-                view.setFocusable(true);
-                view.setClickable(true);
-            }*/
             for(int i = 0; i < 16; i++) {
                 if(i < numCrads) {
                     imageviews[i].setFocusable(true);
@@ -230,10 +191,6 @@ public class MainActivity extends Activity implements OnClickListener {
         }
     };
 
-    private void win(){
-        SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
-        ((LinearLayout)this.findViewById(R.id.outcome_layout)).setVisibility(View.VISIBLE);
-    }
     @Override
     protected void onResume() {
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -249,6 +206,7 @@ public class MainActivity extends Activity implements OnClickListener {
         SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
         super.onPause();
     }
+
     @Override
     public void onBackPressed() {
         quit();
@@ -257,5 +215,28 @@ public class MainActivity extends Activity implements OnClickListener {
     public void quit(){
         this.finish();
     }
+
+    private void win(){
+        SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
+        ((LinearLayout)this.findViewById(R.id.outcome_layout)).setVisibility(View.VISIBLE);
+    }
+
+    private int settingsByLevel(int level) {
+        int time;
+        if(level == 1) {
+            time = 300000;
+            numCrads = 8;
+        }
+        else if(level == 2) {
+            time = 180000;
+            numCrads = 12;
+        }
+        else {
+            time = 60000;
+            numCrads = 16;
+        }
+        return time;
+    }
+
 }
 
