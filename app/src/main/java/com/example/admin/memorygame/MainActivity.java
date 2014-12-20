@@ -1,14 +1,11 @@
 package com.example.admin.memorygame;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.Handler;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
@@ -28,15 +25,17 @@ public class MainActivity extends Activity implements OnClickListener {
     private int[] drawableIds = {R.drawable.card_0, R.drawable.card_1, R.drawable.card_2, R.drawable.card_3,
             R.drawable.card_4, R.drawable.card_5, R.drawable.card_6, R.drawable.card_7, R.drawable.card_back};
 
-    private int[] assignments;	//Holds the assigned positions of the cards
+    private int[] cardsPositions;	//Holds the assigned positions of the cards
 
     private ImageView[] imageviews;
 
     private TextView foundPairsLabel;
     private TextView turns_taken_label;
     private TextView timerTextField;
+    private TextView timelable;
     private Bundle bund;
     private Handler handler;
+    private CountDownTimer timerThread;
 
     private int flippedCards;
     private int currentIndex = -1;
@@ -56,11 +55,12 @@ public class MainActivity extends Activity implements OnClickListener {
         int time;
 
         handler = new Handler();
-        timerTextField = (TextView)MainActivity.this.findViewById(R.id.timer);
+        timerTextField = (TextView)this.findViewById(R.id.timer);
+        timelable = (TextView)this.findViewById(R.id.timelb);
 
         time = settingsByLevel(level);
 
-        new CountDownTimer(time,1000){
+        timerThread =new CountDownTimer(time,1000){
 
             @Override
             public void onTick(long millisUntilFinished) {
@@ -69,7 +69,12 @@ public class MainActivity extends Activity implements OnClickListener {
 
             @Override
             public void onFinish() {
-                Toast.makeText(MainActivity.this,"Your Time Is Up!",Toast.LENGTH_SHORT).show();
+                SoundManager.playLoopedSound(SoundManager.SOUND_LOSER);
+                Toast.makeText(MainActivity.this,"Your Time Is Up!",Toast.LENGTH_LONG).show();
+                timelable.setText("You ");
+                timerThread.cancel();
+                timerTextField.setText("Lose!");
+                try{Thread.sleep(3000);}catch (Exception e){}
                 quit();
             }
         }.start();
@@ -79,11 +84,11 @@ public class MainActivity extends Activity implements OnClickListener {
         turns_taken_label=(TextView)MainActivity.this.findViewById(R.id.turns);
 
         //create a new cards array by the selected level
-        assignments = new int[numCrads];
+        cardsPositions = new int[numCrads];
 
         //set the card at each position to -1 (unset)
         for(int i = 0; i < numCrads; i++){
-            assignments[i] = -1;
+            cardsPositions[i] = -1;
         }
 
         imageviews = new ImageView[16];
@@ -96,22 +101,10 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         }
 
-        Random random = new Random();
+
 
         //for each card loop through.
-        for(int i = 0; i < numCrads/2; i++){
-            //each card goes in 2 slots
-            for (int j = 0; j < 2; j++){
-                //generate a random slot
-                int randomSlot = random.nextInt(numCrads);
-                //make sure that the slot isn't already populated
-                while(assignments[randomSlot] != -1){
-                    randomSlot = random.nextInt(numCrads);
-                }
-                //set this card to that slot
-                assignments[randomSlot] = i;
-            }
-        }
+        setImageRandomPosition();
 
         //set click listeners for each view & set image to back card
         for(int i = 0; i < numCrads; i++){
@@ -120,6 +113,23 @@ public class MainActivity extends Activity implements OnClickListener {
         }
 
 
+    }
+
+    private void setImageRandomPosition() {
+        Random random = new Random();
+        for(int i = 0; i < numCrads/2; i++){
+            //each card goes in 2 slots
+            for (int j = 0; j < 2; j++){
+                //generate a random slot
+                int randomSlot = random.nextInt(numCrads);
+                //make sure that the slot isn't already populated
+                while(cardsPositions[randomSlot] != -1){
+                    randomSlot = random.nextInt(numCrads);
+                }
+                //set this card to that slot
+                cardsPositions[randomSlot] = i;
+            }
+        }
     }
 
     @Override
@@ -132,7 +142,7 @@ public class MainActivity extends Activity implements OnClickListener {
             if(v.getId() == viewIds[i]){
                 //set the face up image for each
                 index = i;
-                ((ImageView)findViewById(viewIds[i])).setImageResource(drawableIds[assignments[i]]);
+                ((ImageView)findViewById(viewIds[i])).setImageResource(drawableIds[cardsPositions[i]]);
                 imageviews[i].setFocusable(false);
                 imageviews[i].setClickable(false);
                 break;
@@ -164,7 +174,7 @@ public class MainActivity extends Activity implements OnClickListener {
         public void run() {
             SoundManager.playSound(SoundManager.SOUND_FLOP);
             //Check if the two cards with the same image
-            if(assignments[currentIndex] == assignments[lastIndex]){
+            if(cardsPositions[currentIndex] == cardsPositions[lastIndex]){
                 ((ImageView)findViewById(viewIds[lastIndex])).setVisibility(View.INVISIBLE);
                 ((ImageView)findViewById(viewIds[currentIndex])).setVisibility(View.INVISIBLE);
 
@@ -213,30 +223,39 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     public void quit(){
+        SoundManager.pauseLoopedSound(SoundManager.SOUND_WINNER);
+        SoundManager.pauseLoopedSound(SoundManager.SOUND_LOSER);
         this.finish();
     }
 
     private void win(){
         SoundManager.playLoopedSound(SoundManager.SOUND_WINNER);
         ((LinearLayout)this.findViewById(R.id.outcome_layout)).setVisibility(View.VISIBLE);
-    }
+        timelable.setText("Good ");
+        timerThread.cancel();
+        timerTextField.setText("Job!");
+        try {
+            Thread.sleep(3500);
+        }catch (Exception e){}
+        quit();
+        }
 
-    private int settingsByLevel(int level) {
+private int settingsByLevel(int level) {
         int time;
         if(level == 1) {
-            time = 300000;
-            numCrads = 8;
+        time = 300000;
+        numCrads = 8;
         }
         else if(level == 2) {
-            time = 180000;
-            numCrads = 12;
+        time = 180000;
+        numCrads = 12;
         }
         else {
-            time = 60000;
-            numCrads = 16;
+        time = 60000;
+        numCrads = 16;
         }
         return time;
-    }
+        }
 
-}
+        }
 

@@ -71,7 +71,6 @@ public class SoundManager {
 			float streamMaxVolume = mAudioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC);
 			float volume = streamVolume / streamMaxVolume * effectVolume;
 			int i = mSoundPoolMap.get(index);
-			System.out.println("Found " + i);
 			mSoundPool.play(i, volume, volume, 1, 0, 1f); 
 		}
 	}
